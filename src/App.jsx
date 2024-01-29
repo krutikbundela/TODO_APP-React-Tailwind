@@ -37,16 +37,16 @@ const App = () => {
 
   return (
     <>
-      <div className="h-screen flex justify-center items-center flex-col gap-8">
-        <div className="flex justify-center items-center gap-6">
+      <div className="min-h-screen flex justify-start sm:justify-center items-center flex-col gap-8 p-4">
+        <div className="flex flex-col  mt-10 md:flex-row justify-center items-center md:gap-6">
           <input
-            className="w-72 border-2 rounded-md px-3 py-3 bg-[#E8ECF4] backdrop-blur-lg"
+            className="w-full md:w-72 border-2 rounded-md px-3 py-3 bg-[#E8ECF4] backdrop-blur-lg mb-4 md:mb-0"
             value={todo}
             onChange={(e) => setTodo(e.target.value)}
             placeholder="Enter a new task"
           />
           <button
-            className="h-full px-5 py-2 bg-[#0264F6] text-white font-medium rounded-md"
+            className="w-full md:w-auto h-full px-5 py-2 bg-[#0264F6] text-white font-medium rounded-md"
             onClick={addItem}
           >
             Add Todo Item
