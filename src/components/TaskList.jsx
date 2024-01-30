@@ -8,7 +8,7 @@ const TaskList = ({
   editIndex,
   editedTodo,
   setEditedTodo,
-  done,setDone,onComplete
+  onComplete
 }) => {
   // console.log("items:", items);
   return (

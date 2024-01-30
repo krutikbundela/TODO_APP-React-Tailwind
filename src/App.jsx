@@ -8,7 +8,6 @@ const App = () => {
   );
   const [editIndex, setEditIndex] = useState(-1);
   const [editedTodo, setEditedTodo] = useState("");
-  const [done, setDone] = useState(false);
 
   // // Load items from local storage on component mount
   // useEffect(() => {
@@ -87,8 +86,6 @@ const App = () => {
           editIndex={editIndex}
           editedTodo={editedTodo}
           setEditedTodo={setEditedTodo}
-          done={done}
-          setDone={setDone}
           onComplete={handleComplete}
         />
       </div>
