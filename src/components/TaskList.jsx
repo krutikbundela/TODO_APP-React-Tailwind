@@ -8,7 +8,9 @@ const TaskList = ({
   editIndex,
   editedTodo,
   setEditedTodo,
+  done,setDone,onComplete
 }) => {
+  // console.log("items:", items);
   return (
     <>
       <div className="w-full text-center flex items-center flex-col gap-5">
@@ -27,7 +29,13 @@ const TaskList = ({
                     type="text"
                     className="w-full md:w-72 border-2 rounded-md px-3 py-3 bg-[#E8ECF4] backdrop-blur-lg mb-3 md:mb-0"
                     value={editedTodo}
+                    maxLength={100}
                     onChange={(e) => setEditedTodo(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        onSaveEdit();
+                      }
+                    }}
                   />
                   <div className="flex gap-3">
                     <button
@@ -46,22 +54,39 @@ const TaskList = ({
                 </>
               ) : (
                 <>
-                  <li className="list-none w-full md:w-2/3 text-center sm:text-left break-normal mb-3 md:mb-0">
-                    {item}
+                  <li className="list-none w-full md:w-2/3 text-center sm:text-left break-all mb-3 md:mb-0">
+                    {item.text}
                   </li>
                   <div className="flex gap-3">
-                    <button
-                      className="w-full md:w-auto bg-blue-600 text-white px-2 py-2 font-medium rounded-md"
-                      onClick={() => onEdit(index)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="w-full md:w-auto bg-white text-blue-600 px-2 py-2 font-medium rounded-md"
-                      onClick={() => onDelete(index)}
-                    >
-                      Delete
-                    </button>
+                    {item.completed ? (
+                      <button
+                        className="w-full md:w-auto bg-green-500 text-white px-2 py-2 font-medium rounded-md"
+                        disabled
+                      >
+                        Completed
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          className="w-full md:w-auto bg-blue-600 text-white px-2 py-2 font-medium rounded-md"
+                          onClick={() => onComplete(index)}
+                        >
+                          Complete
+                        </button>
+                        <button
+                          className="w-full md:w-auto bg-blue-600 text-white px-2 py-2 font-medium rounded-md"
+                          onClick={() => onEdit(index)}
+                        >
+                          Edit
+                        </button>
+                      </>
+                    )}
+                        <button
+                          className="w-full md:w-auto bg-white text-blue-600 px-2 py-2 font-medium rounded-md"
+                          onClick={() => onDelete(index)}
+                        >
+                          Delete
+                        </button>
                   </div>
                 </>
               )}

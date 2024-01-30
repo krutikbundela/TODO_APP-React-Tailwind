@@ -1,28 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskList from "./components/TaskList";
 
 const App = () => {
   const [todo, setTodo] = useState("");
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(
+    JSON.parse(localStorage.getItem("items")) || []
+  );
   const [editIndex, setEditIndex] = useState(-1);
   const [editedTodo, setEditedTodo] = useState("");
+  const [done, setDone] = useState(false);
+
+  // // Load items from local storage on component mount
+  // useEffect(() => {
+  //   const storedItems = JSON.parse(localStorage.getItem("items")) || [];
+  //   console.log("useEffect ~ storedItems:", storedItems);
+  //   setItems(storedItems);
+  // }, []);
+
+  // Save items to local storage whenever items change
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+  }, [items]);
 
   const addItem = () => {
     if (todo !== "") {
-      setItems([...items, todo]);
+      setItems([...items, { text: todo, completed: false }]);
       setTodo("");
     }
   };
 
   const handleEdit = (index) => {
     setEditIndex(index);
-    setEditedTodo(items[index]);
+    setEditedTodo(items[index].text);
   };
 
   const handleSaveEdit = () => {
     if (editedTodo !== "") {
       const updatedItems = [...items];
-      updatedItems[editIndex] = editedTodo;
+      updatedItems[editIndex].text = editedTodo;
       setItems(updatedItems);
       setEditIndex(-1);
       setEditedTodo("");
@@ -35,6 +50,12 @@ const App = () => {
     setItems(updatedItems);
   };
 
+  const handleComplete = (index) => {
+    const updatedItems = [...items];
+    updatedItems[index].completed = true;
+    setItems(updatedItems);
+  };
+
   return (
     <>
       <div className="min-h-screen flex justify-start sm:justify-center items-center flex-col gap-8 p-4">
@@ -42,7 +63,13 @@ const App = () => {
           <input
             className="w-full md:w-72 border-2 rounded-md px-3 py-3 bg-[#E8ECF4] backdrop-blur-lg mb-4 md:mb-0"
             value={todo}
+            maxLength={100}
             onChange={(e) => setTodo(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                addItem();
+              }
+            }}
             placeholder="Enter a new task"
           />
           <button
@@ -60,6 +87,9 @@ const App = () => {
           editIndex={editIndex}
           editedTodo={editedTodo}
           setEditedTodo={setEditedTodo}
+          done={done}
+          setDone={setDone}
+          onComplete={handleComplete}
         />
       </div>
     </>
