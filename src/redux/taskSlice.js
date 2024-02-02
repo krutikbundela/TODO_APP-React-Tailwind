@@ -24,11 +24,15 @@ const taskSlice = createSlice({
     taskDone:(state, action)=>{
          const indexToUpdate = action.payload;
          state.task[indexToUpdate].completed = true;
-    }
+    },
+    editTask:(state,action)=>{
+        const { indexToUpdate, updatedTask } = action.payload;
+        state.task[indexToUpdate].task = updatedTask;
+    },
   },
 });
 
-export const { addTask, deleteTask , taskDone } = taskSlice.actions;
+export const { addTask, deleteTask, taskDone, editTask } = taskSlice.actions;
 
 
 export const taskReducer = taskSlice.reducer;

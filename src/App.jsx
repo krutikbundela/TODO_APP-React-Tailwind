@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TaskList from "./components/TaskList";
 import {useDispatch , useSelector } from 'react-redux';
-import { addTask, deleteTask, taskDone } from "./redux/taskSlice";
+import { addTask, deleteTask, editTask, taskDone } from "./redux/taskSlice";
 
 const App = () => {
 
@@ -10,35 +10,26 @@ const App = () => {
   const {task} = useSelector(state => state.todo);
 
   const [todo, setTodo] = useState("");
-  const [items, setItems] = useState(
-    // JSON.parse(localStorage.getItem("items")) || 
-    []
-  );
   const [editIndex, setEditIndex] = useState(-1);
   const [editedTodo, setEditedTodo] = useState("");
-
-  // Save items to local storage whenever items change
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items));
-  }, [items]);
-
+  
   const addItem = () => {
     if (todo !== "") {
       dispatch(addTask(todo))
       setTodo("");
     }
   };
-
+  
   const handleEdit = (index) => {
     setEditIndex(index);
-    setEditedTodo(items[index].text);
+    if(index > -1){
+      setEditedTodo(task[index].task);
+    }
   };
 
   const handleSaveEdit = () => {
     if (editedTodo !== "") {
-      const updatedItems = [...items];
-      updatedItems[editIndex].text = editedTodo;
-      setItems(updatedItems);
+      dispatch(editTask({ indexToUpdate: editIndex, updatedTask: editedTodo }));
       setEditIndex(-1);
       setEditedTodo("");
     }
