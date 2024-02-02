@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TaskList from "./components/TaskList";
 import {useDispatch , useSelector } from 'react-redux';
-import { addTask } from "./redux/taskSlice";
+import { addTask, deleteTask, taskDone } from "./redux/taskSlice";
 
 const App = () => {
 
@@ -44,16 +44,12 @@ const App = () => {
     }
   };
 
-  const handleDelete = (index) => {
-    const updatedItems = [...items];
-    updatedItems.splice(index, 1);
-    setItems(updatedItems);
+  const handleDelete = (index) => { 
+    dispatch(deleteTask(index))
   };
 
   const handleComplete = (index) => {
-    const updatedItems = [...items];
-    updatedItems[index].completed = true;
-    setItems(updatedItems);
+   dispatch(taskDone(index))
   };
 
   return (
