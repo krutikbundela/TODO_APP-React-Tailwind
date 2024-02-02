@@ -55,7 +55,7 @@ const TaskList = ({
               ) : (
                 <>
                   <li className="list-none w-full md:w-2/3 text-center sm:text-left break-all mb-3 md:mb-0">
-                    {item.text}
+                    {item.task}
                   </li>
                   <div className="flex gap-3">
                     {item.completed ? (

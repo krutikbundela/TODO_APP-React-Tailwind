@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import TaskList from "./components/TaskList";
+import {useDispatch , useSelector } from 'react-redux';
+import { addTask } from "./redux/taskSlice";
 
 const App = () => {
+
+  const dispatch = useDispatch();
+
+  const {task} = useSelector(state => state.todo);
+
   const [todo, setTodo] = useState("");
   const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("items")) || []
+    // JSON.parse(localStorage.getItem("items")) || 
+    []
   );
   const [editIndex, setEditIndex] = useState(-1);
   const [editedTodo, setEditedTodo] = useState("");
-
-  // // Load items from local storage on component mount
-  // useEffect(() => {
-  //   const storedItems = JSON.parse(localStorage.getItem("items")) || [];
-  //   console.log("useEffect ~ storedItems:", storedItems);
-  //   setItems(storedItems);
-  // }, []);
 
   // Save items to local storage whenever items change
   useEffect(() => {
@@ -23,7 +24,7 @@ const App = () => {
 
   const addItem = () => {
     if (todo !== "") {
-      setItems([...items, { text: todo, completed: false }]);
+      dispatch(addTask(todo))
       setTodo("");
     }
   };
@@ -79,7 +80,7 @@ const App = () => {
           </button>
         </div>
         <TaskList
-          items={items}
+          items={task}
           onEdit={handleEdit}
           onSaveEdit={handleSaveEdit}
           onDelete={handleDelete}
