@@ -1,7 +1,7 @@
 import express from "express";
 import { mongoose } from "mongoose";
 import dotenv from "dotenv";
-
+import todoRoutes  from "./routes/todoRoutes.js"
 dotenv.config();
 
 mongoose
@@ -26,7 +26,19 @@ app.listen(process.env.PORT, () => {
 
 //======================================================
 
-// app.use("/api/user", UserRoutes)
+app.use("/api/todo", todoRoutes)
 // app.use("/api/auth", AuthRoutes)
 
 //======================================================
+
+//Middleware For Error
+app.use((err,req,res,next) =>{
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    res.status(statusCode).json({
+        success:false,
+        statusCode,
+        message
+    })
+})
