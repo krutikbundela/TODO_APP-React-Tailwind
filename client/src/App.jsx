@@ -1,28 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import TaskList from "./components/TaskList";
-import {useDispatch , useSelector } from 'react-redux';
-import { addTask, deleteTask, editTask, taskDone } from "./redux/taskSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addTask,
+  deleteTask,
+  editTask,
+  fetchTodos,
+  taskDone,
+} from "./redux/taskSlice";
 
 const App = () => {
-
   const dispatch = useDispatch();
 
-  const {task} = useSelector(state => state.todo);
+  const { task, isLoading, isError } = useSelector((state) => state.todo);
 
   const [todo, setTodo] = useState("");
   const [editIndex, setEditIndex] = useState(-1);
   const [editedTodo, setEditedTodo] = useState("");
-  
+
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, []);
+
   const addItem = () => {
     if (todo !== "") {
-      dispatch(addTask(todo))
+      dispatch(addTask(todo));
       setTodo("");
     }
   };
-  
+
   const handleEdit = (index) => {
     setEditIndex(index);
-    if(index > -1){
+    if (index > -1) {
       setEditedTodo(task[index].task);
     }
   };
@@ -35,12 +45,12 @@ const App = () => {
     }
   };
 
-  const handleDelete = (index) => { 
-    dispatch(deleteTask(index))
+  const handleDelete = (index) => {
+    dispatch(deleteTask(index));
   };
 
   const handleComplete = (index) => {
-   dispatch(taskDone(index))
+    dispatch(taskDone(index));
   };
 
   return (
@@ -68,6 +78,8 @@ const App = () => {
         </div>
         <TaskList
           items={task}
+          isError={isError}
+          isLoading={isLoading}
           onEdit={handleEdit}
           onSaveEdit={handleSaveEdit}
           onDelete={handleDelete}

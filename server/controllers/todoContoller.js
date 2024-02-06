@@ -16,7 +16,10 @@ export const createTask = async (req, res , next) => {
 
     await newTodo.save();
 
-     res.status(200).json("Task Created");
+     res.status(200).json({
+       success: true,
+       message: "Task Created",
+     });
 
   } catch (error) {
     next(error);

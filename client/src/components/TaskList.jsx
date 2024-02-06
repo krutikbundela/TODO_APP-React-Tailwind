@@ -2,6 +2,8 @@ import React from "react";
 
 const TaskList = ({
   items,
+  isError,
+  isLoading,
   onEdit,
   onSaveEdit,
   onDelete,
