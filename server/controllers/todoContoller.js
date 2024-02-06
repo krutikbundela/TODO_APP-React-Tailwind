@@ -32,3 +32,28 @@ export const getAllTask = async(req,res,next) =>{
         next(error);
     }
 };
+
+export const deleteTask = async(req,res,next) =>{
+    try {
+        const id = req.params.id
+
+        if(!id){
+            return next(errorHandler(400,"Id Not Found"))
+        }
+
+         const deletedTask = await Todo.findByIdAndDelete(id);
+         console.log("deleteTask ~ deletedTask:", deletedTask);
+
+         if (!deletedTask) {
+           return next(errorHandler(404, "Task not found"));
+         }
+
+         res.status(200).json({
+           success: true,
+           message: "Task deleted successfully",
+         });
+         
+    } catch (error) {
+        next(error);
+    }
+};
