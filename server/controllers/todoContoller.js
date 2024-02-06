@@ -22,3 +22,13 @@ export const createTask = async (req, res , next) => {
     next(error);
   }
 };
+
+export const getAllTask = async(req,res,next) =>{
+    try {
+        const allTask = await Todo.find();
+
+        res.status(200).json(allTask);
+    } catch (error) {
+        next(error);
+    }
+};
