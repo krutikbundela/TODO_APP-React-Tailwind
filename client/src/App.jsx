@@ -4,6 +4,7 @@ import TaskList from "./components/TaskList";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTask,
+  completeTodo,
   createTodo,
   deleteTask,
   deleteTodo,
@@ -52,8 +53,8 @@ const App = () => {
     dispatch(deleteTodo(id));
   };
 
-  const handleComplete = (index) => {
-    dispatch(taskDone(index));
+  const handleComplete = (id) => {
+    dispatch(completeTodo(id));
   };
 
   return (

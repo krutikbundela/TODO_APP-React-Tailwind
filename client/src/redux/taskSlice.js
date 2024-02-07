@@ -21,6 +21,12 @@ export const deleteTodo = createAsyncThunk("deleteTodo", async (id) =>{
   return response.data
 });
 
+export const completeTodo = createAsyncThunk("completeTodo", async (id) =>{
+  console.log(id);
+  const response = await axios.post("http://localhost:4390/api/todo/complete",{id});
+  return response.data
+});
+
 const initialState = {
   isLoading: false,
   task: [],
@@ -74,6 +80,23 @@ const taskSlice = createSlice({
       return state;
     });
     builder.addCase(deleteTodo.rejected, (state, action) => {
+      state.isError = true;
+      console.log("Error", action.payload);
+    });
+    
+    //====================================================
+    
+    builder.addCase(completeTodo.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(completeTodo.fulfilled, (state, action) => {
+      state.isLoading = false;
+      fetchTodos();
+      // state.task = action.payload;
+
+      return state;
+    });
+    builder.addCase(completeTodo.rejected, (state, action) => {
       state.isError = true;
       console.log("Error", action.payload);
     });
