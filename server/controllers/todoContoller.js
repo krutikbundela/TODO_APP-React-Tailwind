@@ -78,3 +78,26 @@ export const completeTask = async (req, res, next) => {
     next(error);
   }
 };
+
+export const editTask = async (req, res, next) => {
+  try {
+    const { id , task } = req.body;
+    console.log("editTask ~ task:", task);
+    console.log("editTask ~ id:", id);
+
+    if (!id) {
+      return next(errorHandler(400, "Id Not Found"));
+    }
+
+    await Todo.findByIdAndUpdate(id, {
+      task,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Task Updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

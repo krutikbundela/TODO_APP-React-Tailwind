@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 import TaskList from "./components/TaskList";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addTask,
   completeTodo,
   createTodo,
-  deleteTask,
   deleteTodo,
   editTask,
+  editTodo,
   fetchTodos,
-  taskDone,
 } from "./redux/taskSlice";
 
 const App = () => {
@@ -33,8 +31,8 @@ const App = () => {
     }
   };
 
-  const handleEdit = (index) => {
-    setEditIndex(index);
+  const handleEdit = (id, index) => {
+    setEditIndex(id);
     if (index > -1) {
       setEditedTodo(task[index].task);
     }
@@ -42,7 +40,7 @@ const App = () => {
 
   const handleSaveEdit = () => {
     if (editedTodo !== "") {
-      dispatch(editTask({ indexToUpdate: editIndex, updatedTask: editedTodo }));
+      dispatch(editTodo({ id: editIndex, task: editedTodo }));
       setEditIndex(-1);
       setEditedTodo("");
     }

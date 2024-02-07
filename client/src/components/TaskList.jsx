@@ -19,9 +19,9 @@ const TaskList = ({
           Task List
         </h1>
         <div className="w-full md:w-2/3 lg:w-1/2 bg-slate-300 backdrop-blur-lg px-3 py-5 rounded-md">
-          {items.map((item) => (
+          {items.map((item,index) => (
             <div
-              key={item._id}
+              key={index}
               className="flex flex-col md:flex-row justify-between items-center mb-5 md:mb-1"
             >
               {item._id === editIndex ? (
@@ -76,7 +76,7 @@ const TaskList = ({
                         </button>
                         <button
                           className="w-full md:w-auto bg-blue-600 text-white px-2 py-2 font-medium rounded-md"
-                          onClick={() => onEdit(item._id)}
+                          onClick={() => onEdit(item._id,index)}
                         >
                           Edit
                         </button>

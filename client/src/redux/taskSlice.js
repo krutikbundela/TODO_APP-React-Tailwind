@@ -27,6 +27,11 @@ export const completeTodo = createAsyncThunk("completeTodo", async (id) =>{
   return response.data
 });
 
+export const editTodo = createAsyncThunk("editTodo", async (data) =>{
+  const response = await axios.post("http://localhost:4390/api/todo/edit",data);
+  return response.data
+});
+
 const initialState = {
   isLoading: false,
   task: [],
@@ -100,6 +105,22 @@ const taskSlice = createSlice({
       state.isError = true;
       console.log("Error", action.payload);
     });
+    //====================================================
+    
+    builder.addCase(editTodo.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(editTodo.fulfilled, (state, action) => {
+      state.isLoading = false;
+      fetchTodos();
+      // state.task = action.payload;
+
+      return state;
+    });
+    builder.addCase(editTodo.rejected, (state, action) => {
+      state.isError = true;
+      console.log("Error", action.payload);
+    });
   },
   reducers: {
     // addTask: (state, action) => {
@@ -115,14 +136,14 @@ const taskSlice = createSlice({
     //   //Splice Logic
     //   state.task.splice(action.payload, 1);
     // },
-    taskDone: (state, action) => {
-      const indexToUpdate = action.payload;
-      state.task[indexToUpdate].completed = true;
-    },
-    editTask: (state, action) => {
-      const { indexToUpdate, updatedTask } = action.payload;
-      state.task[indexToUpdate].task = updatedTask;
-    },
+    // taskDone: (state, action) => {
+    //   const indexToUpdate = action.payload;
+    //   state.task[indexToUpdate].completed = true;
+    // },
+    // editTask: (state, action) => {
+    //   const { indexToUpdate, updatedTask } = action.payload;
+    //   state.task[indexToUpdate].task = updatedTask;
+    // },
   },
 });
 
