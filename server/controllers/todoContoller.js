@@ -38,7 +38,7 @@ export const getAllTask = async(req,res,next) =>{
 
 export const deleteTask = async(req,res,next) =>{
     try {
-        const id = req.params.id
+        const {id} = req.body;
 
         if(!id){
             return next(errorHandler(400,"Id Not Found"))

@@ -4,13 +4,27 @@ import axios from "axios"; // Import Axios
 // Action
 export const fetchTodos = createAsyncThunk("fetchTodos", async () => {
   const response = await axios.get("http://localhost:4390/api/todo/getall");
-  console.log("fetchTodos ~ response:", response);
   return response.data;
+});
+
+export const createTodo = createAsyncThunk("createTask", async (task) =>{
+  const response = await axios.post("http://localhost:4390/api/todo/create",{
+    task
+  });
+  return response.data
+});
+export const deleteTodo = createAsyncThunk("deleteTodo", async (id) =>{
+  console.log(id);
+  const response = await axios.delete("http://localhost:4390/api/todo/delete",{
+    data:  {id},
+  });
+  return response.data
 });
 
 const initialState = {
   isLoading: false,
   task: [],
+  data:null,
   isError: false,
 };
 
@@ -20,13 +34,10 @@ const taskSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchTodos.pending, (state, action) => {
       state.isLoading = true;
-
-      console.log("pending");
     });
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
       state.isLoading = false;
       state.task = action.payload;
-      console.log("oay");
 
       return state;
     });
@@ -34,21 +45,53 @@ const taskSlice = createSlice({
       state.isError = true;
       console.log("Error", action.payload);
     });
+    //====================================================
+    builder.addCase(createTodo.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createTodo.fulfilled, (state, action) => {
+      state.isLoading = false;
+      // fetchTodos();
+      // state.task = action.payload;
+
+      return state;
+    });
+    builder.addCase(createTodo.rejected, (state, action) => {
+      state.isError = true;
+      console.log("Error", action.payload);
+    });
+
+    //====================================================
+    
+    builder.addCase(deleteTodo.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+      state.isLoading = false;
+      fetchTodos();
+      // state.task = action.payload;
+
+      return state;
+    });
+    builder.addCase(deleteTodo.rejected, (state, action) => {
+      state.isError = true;
+      console.log("Error", action.payload);
+    });
   },
   reducers: {
-    addTask: (state, action) => {
-      state.task.push({ task: action.payload, completed: false });
-    },
-    deleteTask: (state, action) => {
-      //Filter Logic
-      // const newTask = state.task.filter(
-      //   (task, index) => index !== action.payload
-      // );
-      // state.task = newTask
+    // addTask: (state, action) => {
+    //   state.task.push({ task: action.payload, completed: false });
+    // },
+    // deleteTask: (state, action) => {
+    //   //Filter Logic
+    //   // const newTask = state.task.filter(
+    //   //   (task, index) => index !== action.payload
+    //   // );
+    //   // state.task = newTask
 
-      //Splice Logic
-      state.task.splice(action.payload, 1);
-    },
+    //   //Splice Logic
+    //   state.task.splice(action.payload, 1);
+    // },
     taskDone: (state, action) => {
       const indexToUpdate = action.payload;
       state.task[indexToUpdate].completed = true;

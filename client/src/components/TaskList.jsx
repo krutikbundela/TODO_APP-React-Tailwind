@@ -1,4 +1,3 @@
-import React from "react";
 
 const TaskList = ({
   items,
@@ -12,7 +11,7 @@ const TaskList = ({
   setEditedTodo,
   onComplete
 }) => {
-  // console.log("items:", items);
+  console.log("items:", items);
   return (
     <>
       <div className="w-full text-center flex items-center flex-col gap-5">
@@ -20,12 +19,12 @@ const TaskList = ({
           Task List
         </h1>
         <div className="w-full md:w-2/3 lg:w-1/2 bg-slate-300 backdrop-blur-lg px-3 py-5 rounded-md">
-          {items.map((item, index) => (
+          {items.map((item) => (
             <div
-              key={index}
+              key={item._id}
               className="flex flex-col md:flex-row justify-between items-center mb-5 md:mb-1"
             >
-              {index === editIndex ? (
+              {item._id === editIndex ? (
                 <>
                   <input
                     type="text"
@@ -71,24 +70,24 @@ const TaskList = ({
                       <>
                         <button
                           className="w-full md:w-auto bg-blue-600 text-white px-2 py-2 font-medium rounded-md"
-                          onClick={() => onComplete(index)}
+                          onClick={() => onComplete(item._id)}
                         >
                           Complete
                         </button>
                         <button
                           className="w-full md:w-auto bg-blue-600 text-white px-2 py-2 font-medium rounded-md"
-                          onClick={() => onEdit(index)}
+                          onClick={() => onEdit(item._id)}
                         >
                           Edit
                         </button>
                       </>
                     )}
-                        <button
-                          className="w-full md:w-auto bg-white text-blue-600 px-2 py-2 font-medium rounded-md"
-                          onClick={() => onDelete(index)}
-                        >
-                          Delete
-                        </button>
+                    <button
+                      className="w-full md:w-auto bg-white text-blue-600 px-2 py-2 font-medium rounded-md"
+                      onClick={() => onDelete(item._id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </>
               )}

@@ -4,7 +4,9 @@ import TaskList from "./components/TaskList";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTask,
+  createTodo,
   deleteTask,
+  deleteTodo,
   editTask,
   fetchTodos,
   taskDone,
@@ -25,7 +27,7 @@ const App = () => {
 
   const addItem = () => {
     if (todo !== "") {
-      dispatch(addTask(todo));
+      dispatch(createTodo(todo));
       setTodo("");
     }
   };
@@ -45,8 +47,9 @@ const App = () => {
     }
   };
 
-  const handleDelete = (index) => {
-    dispatch(deleteTask(index));
+  const handleDelete = (id) => {
+    console.log("handleDelete ~ id:", id);
+    dispatch(deleteTodo(id));
   };
 
   const handleComplete = (index) => {
