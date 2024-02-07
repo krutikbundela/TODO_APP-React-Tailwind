@@ -20,16 +20,19 @@ const App = () => {
   const [editIndex, setEditIndex] = useState(-1);
   const [editedTodo, setEditedTodo] = useState("");
 
-  useEffect(() => {
-    dispatch(fetchTodos());
-  }, []);
+const addItem = () => {
+  if (todo !== "") {
+    dispatch(createTodo(todo))
+      .then(() => {
+        setTodo(""); // Clear input field
+        dispatch(fetchTodos()); // Fetch updated todos after creating a new one
+      })
+      .catch((error) => {
+        console.error("Error creating todo:", error);
+      });
+  }
+};
 
-  const addItem = () => {
-    if (todo !== "") {
-      dispatch(createTodo(todo));
-      setTodo("");
-    }
-  };
 
   const handleEdit = (id, index) => {
     setEditIndex(id);
@@ -40,20 +43,47 @@ const App = () => {
 
   const handleSaveEdit = () => {
     if (editedTodo !== "") {
-      dispatch(editTodo({ id: editIndex, task: editedTodo }));
-      setEditIndex(-1);
-      setEditedTodo("");
+      dispatch(editTodo({ id: editIndex, task: editedTodo }))
+        .then(() => {
+          setEditIndex(-1);
+          setEditedTodo("");
+          dispatch(fetchTodos());
+        })
+        .catch((error) => {
+          console.error("Error creating todo:", error);
+        });
+      
     }
   };
 
   const handleDelete = (id) => {
     console.log("handleDelete ~ id:", id);
-    dispatch(deleteTodo(id));
+    dispatch(deleteTodo(id))
+      .then(() => {
+        setEditIndex(-1);
+        setEditedTodo("");
+        dispatch(fetchTodos());
+      })
+      .catch((error) => {
+        console.error("Error creating todo:", error);
+      });
   };
 
   const handleComplete = (id) => {
-    dispatch(completeTodo(id));
+    dispatch(completeTodo(id))
+      .then(() => {
+        setEditIndex(-1);
+        setEditedTodo("");
+        dispatch(fetchTodos());
+      })
+      .catch((error) => {
+        console.error("Error creating todo:", error);
+      });
   };
+
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, []);
 
   return (
     <>
